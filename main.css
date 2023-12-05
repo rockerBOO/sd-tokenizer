@@ -13,6 +13,16 @@ body {
   font-size: 1.2em;
 }
 
+a {
+	color: var(--accent-fg-color);
+	transition: all ease-in-out 96ms;
+}
+
+a:hover, a:focus {
+	color: var(--bg-color);
+	background-color: var(--accent-fg-color);
+}
+
 label {
   padding: 1em;
   width: 100%;
@@ -72,6 +82,15 @@ input[type="button"]:active {
   #tokenizer {
     grid-template-columns: 3fr 2fr 1fr;
   }
+}
+
+nav ul {
+	display: grid;
+	list-style: none;
+}
+
+nav ul li {
+	
 }
 
 .custom-select {
@@ -152,4 +171,12 @@ select {
 .is-loading {
   padding: 3em;
   border-radius: 0.15rem 0.5rem;
+}
+
+footer {
+	text-align: right;
+	position: fixed;
+	bottom: 0;
+	right: 2em;
+	margin-top: 30vh;
 }
