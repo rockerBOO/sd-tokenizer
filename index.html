@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <link rel="stylesheet" href="main.css" />
+  </head>
+
+  <body>
+    <div id="wrapper">
+      <h1>SD Tokenizer</h1>
+
+      Input your words:
+      <input type="text" id="input" />
+
+      <select name="model" id="model">
+        <option value="runwayml/stable-diffusion-v1-5">SD 1.x</option>
+        <option value="stabilityai/stable-diffusion-2-1">SD 2.x</option>
+        <option value="stabilityai/stable-diffusion-xl-base-1.0">SDXL</option>
+        <option value="stabilityai/sdxl-turbo">SDXL Turbo</option>
+      </select>
+
+
+      <div id="result"></div>
+      <div id="loading"></div>
+      Tokens:
+      <div id="tokens"></div>
+      <div id="input_ids"></div>
+    </div>
+
+    <!-- Make `wasm_bindgen` available for `index.js` -->
+    <script src="./pkg/sd_tokenizer.js"></script>
+    <!-- Note that there is no `type="module"` in the script tag -->
+    <script src="./main.js"></script>
+  </body>
+</html>
