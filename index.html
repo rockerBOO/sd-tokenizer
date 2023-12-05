@@ -2,33 +2,55 @@
   <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link rel="stylesheet" href="main.css" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,shrink-to-fit=no"
+    />
   </head>
 
   <body>
     <div id="wrapper">
       <h1>SD Tokenizer</h1>
+      <p>
+        Find out which tokens are used for your words. Uses Hugging Face
+        Tokenizer, locally.
+      </p>
 
-      Input your words:
-      <input type="text" id="input" />
-
-      <select name="model" id="model">
-        <option value="runwayml/stable-diffusion-v1-5">SD 1.x</option>
-        <option value="stabilityai/stable-diffusion-2-1">SD 2.x</option>
-        <option value="stabilityai/stable-diffusion-xl-base-1.0">SDXL</option>
-        <option value="stabilityai/sdxl-turbo">SDXL Turbo</option>
-      </select>
-
+      <form id="tokenizer">
+        <label>
+          Tokenize
+          <input type="text" id="input" placeholder="A glorious dog" />
+        </label>
+        <div class="custom-select">
+          <select name="model" id="model">
+            <option value="runwayml/stable-diffusion-v1-5">SD 1.x</option>
+            <option value="stabilityai/stable-diffusion-2-1">SD 2.x</option>
+            <option value="stabilityai/stable-diffusion-xl-base-1.0">
+              SDXL
+            </option>
+            <option value="stabilityai/sdxl-turbo">SDXL Turbo</option>
+          </select>
+        </div>
+        <input type="button" id="tokenize" value="Tokenize" />
+      </form>
 
       <div id="result"></div>
-      <div id="loading"></div>
-      Tokens:
-      <div id="tokens"></div>
-      <div id="input_ids"></div>
+      <div id="loading-container">
+        <div id="loading"></div>
+      </div>
+      <div class="container">
+        <div class="block">
+          <div>Tokens:</div>
+          <div id="tokens"></div>
+        </div>
+        <div class="block">
+          <div>Input ids</div>
+          <div id="input_ids"></div>
+        </div>
+      </div>
     </div>
 
-    <!-- Make `wasm_bindgen` available for `index.js` -->
     <script src="./pkg/sd_tokenizer.js"></script>
-    <!-- Note that there is no `type="module"` in the script tag -->
     <script src="./main.js"></script>
   </body>
 </html>

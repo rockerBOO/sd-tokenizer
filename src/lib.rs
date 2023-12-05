@@ -1,5 +1,6 @@
 use std::panic;
 use std::str::FromStr;
+use tokenizers::ModelWrapper::{BPE, self};
 use tokenizers::{Encoding, Tokenizer};
 use wasm_bindgen::prelude::*;
 use web_sys::js_sys;
@@ -24,6 +25,12 @@ impl SDTokenizer {
             encoding: self.tokenizer.encode(text, add_special_tokens).unwrap(),
         }
     }
+
+    pub fn end_of_word_suffix(&self) -> ModelWasm {
+        ModelWasm {
+            model: self.tokenizer.get_model().to_owned()
+        }
+    }
 }
 
 #[wasm_bindgen]
@@ -46,4 +53,22 @@ impl EncodingWasm {
             .map(|x| js_sys::JsString::from(x.as_str()))
             .collect()
     }
+}
+
+
+#[wasm_bindgen]
+pub struct ModelWasm {
+    model: ModelWrapper,
+}
+
+#[wasm_bindgen]
+impl ModelWasm {
+    #[wasm_bindgen(method, getter = end_of_word_suffix)]
+    pub fn get_end_of_word_suffix(&self) -> js_sys::JsString {
+        match &self.model {
+            BPE(v) => js_sys::JsString::from(v.end_of_word_suffix.to_owned().unwrap_or("invalid".to_string())),
+            _ => todo!(),
+        }
+    }
+
 }
