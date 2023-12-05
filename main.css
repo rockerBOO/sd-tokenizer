@@ -37,7 +37,7 @@ input[type="text"] {
   border: 1em solid var(--bg-color);
   outline: 1px solid var(--accent-fg-color);
   color: var(--fg-color);
-  width: 95%;
+  width: 90%;
   border-radius: 0.15rem 0.5rem;
 }
 
@@ -65,14 +65,15 @@ input[type="button"]:active {
   max-width: 60em;
   grid-gap: 1em;
   transition: ease-in-out 96ms;
-  overflow: hidden;
+  overflow-x: hidden;
+	margin-bottom: 1em;
 }
 
 #tokenizer > * {
   transition: ease-in-out 96ms;
 }
 
-@media (min-width: 30em) {
+@media (min-width: 40em) {
   #tokenizer {
     grid-template-columns: 1fr 1fr;
   }
