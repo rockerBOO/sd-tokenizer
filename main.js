@@ -10,21 +10,28 @@ async function run_wasm() {
 
   const worker = new Worker("./worker.js");
 
+  let loadingTimeout;
+
   worker.onmessage = (e) => {
     const encoding = e.data;
 
-    loadingEle.textContent = "";
-    loadingEle.classList.remove("is-loading");
+    loadingTimeout = setTimeout(() => {
+			loadingEle.textContent = "";
+      loadingEle.classList.remove("is-loading");
+    }, 240);
 
-    tokensEle.innerHTML =
-      encoding.map((enc) => enc.tokens.join(', '));
-    inputIdsEle.innerHTML =
-      encoding.map((enc) => enc.input_ids.join(', '));
+    tokensEle.innerHTML = encoding.map((enc) => enc.tokens.join(", "));
+    inputIdsEle.innerHTML = encoding.map((enc) => enc.input_ids.join(", "));
   };
 
-  const getTokens = (e) => {
-    loadingEle.textContent = "Loading...";
-    loadingEle.classList.add("is-loading");
+  const getTokens = () => {
+    if (loadingTimeout) {
+      // We don't want it clearing before we load again if we are unloading
+      clearTimeout(loadingTimeout);
+    }
+
+		loadingEle.textContent = "Loading...";
+		loadingEle.classList.add("is-loading");
     tokensEle.textContent = "";
     inputIdsEle.textContent = "";
 
