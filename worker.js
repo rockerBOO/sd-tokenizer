@@ -73,9 +73,6 @@ async function init_wasm_in_worker() {
   self.onmessage = async (event) => {
     const tokenizer = await getTokenizer(event.data.sd_model);
     const encoding = tokenizer.encode(event.data.input);
-    const endOfWordSuffix = tokenizer.end_of_word_suffix;
-
-    console.log(endOfWordSuffix)
 
     self.postMessage([
       {
