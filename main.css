@@ -14,17 +14,17 @@ body {
 }
 
 a {
-	color: var(--accent-fg-color);
-	transition: all ease-in-out 96ms;
+  color: var(--accent-fg-color);
+  transition: all ease-in-out 96ms;
 }
 
-a:hover, a:focus {
-	color: var(--bg-color);
-	background-color: var(--accent-fg-color);
+a:hover,
+a:focus {
+  color: var(--bg-color);
+  background-color: var(--accent-fg-color);
 }
 
-label {
-  padding: 1em;
+#tokenizer label {
   width: 100%;
   display: grid;
   grid-gap: 1em;
@@ -32,13 +32,26 @@ label {
   grid-template-columns: auto 2fr;
 }
 
-input[type="text"] {
+label {
+  cursor: pointer;
+}
+
+input[type="text"],
+textarea {
   background-color: var(--bg-color);
   border: 1em solid var(--bg-color);
   outline: 1px solid var(--accent-fg-color);
   color: var(--fg-color);
   width: 90%;
-  border-radius: 0.15rem 0.5rem;
+  font-size: 1.25em;
+  border-radius: 0.15em 0.5em;
+  transition: all ease-in-out 96ms;
+  max-width: 370px;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  outline: thick solid var(--accent-fg-color);
 }
 
 input[type="button"] {
@@ -66,7 +79,7 @@ input[type="button"]:active {
   grid-gap: 1em;
   transition: ease-in-out 96ms;
   overflow-x: hidden;
-	margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 
 #tokenizer > * {
@@ -86,12 +99,8 @@ input[type="button"]:active {
 }
 
 nav ul {
-	display: grid;
-	list-style: none;
-}
-
-nav ul li {
-	
+  display: grid;
+  list-style: none;
 }
 
 .custom-select {
@@ -175,9 +184,49 @@ select {
 }
 
 footer {
-	text-align: right;
-	position: fixed;
-	bottom: 0;
-	right: 2em;
-	margin-top: 30vh;
+  text-align: right;
+  position: fixed;
+  bottom: 0;
+  right: 2em;
+  margin-top: 30vh;
+}
+
+.token-list {
+  list-style: none;
+  display: inline;
+  padding: 0;
+  justify-items: flex-start;
+  font-size: 2em;
+}
+
+.token-list li {
+  float: left;
+  cursor: help;
+  color: #e0ffee;
+  margin-bottom: 0.5em;
+}
+
+.token-list > li:nth-of-type(even) {
+  background-color: #183157;
+}
+
+.token-list > li:nth-of-type(odd) {
+  background-color: #14535c;
+}
+
+.token-list .space {
+  background-color: var(--accent-bg-color);
+}
+
+.token-list .end-of-word {
+  opacity: 0.1;
+}
+
+.hide {
+  display: none;
+}
+
+#notes {
+  opacity: 0.5;
+  max-width: 35em;
 }

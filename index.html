@@ -12,18 +12,9 @@
       name="description"
       content="See which tokens are used for your words in Stable Diffusion"
     />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="favicon-32.png"
-    />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
     <link rel="shortcut icon" href="favicon-32.ico" />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="apple-favicon.png"
-    />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-favicon.png" />
   </head>
 
   <body>
@@ -35,10 +26,11 @@
       </p>
 
       <form id="tokenizer">
-        <label>
-          Tokenize
-          <input type="text" id="input" placeholder="A glorious dog" />
-        </label>
+        <textarea
+          type="text"
+          id="input"
+          placeholder="A glorious dog"
+        ></textarea>
         <div class="custom-select">
           <select name="model" id="model">
             <option value="runwayml/stable-diffusion-v1-5">SD 1.x</option>
@@ -51,6 +43,16 @@
         </div>
         <input type="button" id="tokenize" value="Tokenize" />
       </form>
+
+      <div>
+        <label
+          ><input type="checkbox" id="hide-end-of-word" value="on" /> Hide
+          <span
+            title="End of word character shows when the tokenizer has a separate token for tokens that end a word"
+            >end of word character (&lt;/w&gt;)</span
+          ></label
+        >
+      </div>
 
       <div id="result"></div>
       <div id="loading-container">
@@ -66,6 +68,21 @@
           <div id="input_ids"></div>
         </div>
       </div>
+    </div>
+
+    <div id="notes">
+      <h3>Notes</h3>
+      <h4>End of word character &lt;/w&gt;</h4>
+      <p>
+        End of word character (&lt;/w&gt;) is part of the token to represent a
+        token that is at the end of the word. This is different than if it was
+        at the start of word, or in the middle of a word.
+      </p>
+      <h4>Token highlighting</h4>
+      <p>
+        Tokens have alternating background colors to represent how the words can
+        be broken up.
+      </p>
     </div>
 
     <footer>

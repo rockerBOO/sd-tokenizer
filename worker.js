@@ -71,10 +71,10 @@ async function init_wasm_in_worker() {
 
   // Set callback to handle messages passed to the worker.
   self.onmessage = async (event) => {
-		// No data to process...
-		if (event.data.input.strip() === "") {
-			return;
-		}
+    // No data to process...
+    if (event.data.input.trim() === "") {
+      return;
+    }
     const tokenizer = await getTokenizer(event.data.sd_model);
     const encoding = tokenizer.encode(event.data.input);
 
