@@ -1,6 +1,6 @@
 :root {
   --bg-color: #031b1e;
-  --fg-color: #a9ddc0;
+  --fg-color: #d4ecdf;
 
   --accent-bg-color: #08272b;
   --accent-fg-color: #0e8871;
@@ -36,6 +36,7 @@ label {
   cursor: pointer;
 }
 
+span.input,
 input[type="text"],
 textarea {
   background-color: var(--bg-color);
@@ -46,6 +47,7 @@ textarea {
   font-size: 1.25em;
   border-radius: 0.15em 0.5em;
   transition: all ease-in-out 96ms;
+  overflow-wrap: break-word;
   max-width: 370px;
 }
 
@@ -219,7 +221,7 @@ footer {
 }
 
 .token-list .end-of-word {
-  opacity: 0.1;
+  opacity: 0.25;
 }
 
 .hide {
