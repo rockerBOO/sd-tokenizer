@@ -88,6 +88,12 @@ async function run_wasm() {
     encoding
       .map((enc) => document.createTextNode(enc.input_ids.join(", ")))
       .forEach((v) => inputIdsEle.append(v));
+
+    encoding.map(
+      (enc) =>
+        (document.querySelector("#num-tokens").textContent =
+          enc.input_ids.length),
+    );
   };
 
   const getTokens = () => {
@@ -108,6 +114,7 @@ async function run_wasm() {
   };
 
   wordsEle.addEventListener("change", getTokens);
+  wordsEle.addEventListener("keyup", getTokens);
   tokenizerEle.addEventListener("submit", getTokens);
 }
 

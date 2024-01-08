@@ -72,6 +72,11 @@ input[type="button"]:active {
   transform: translate3d(1px, 1px, 1px);
 }
 
+#wrapper {
+  display: grid;
+  place-items: center;
+}
+
 #tokenizer {
   display: grid;
   grid-template-columns: 1fr;
@@ -82,6 +87,7 @@ input[type="button"]:active {
   transition: ease-in-out 96ms;
   overflow-x: hidden;
   margin-bottom: 1em;
+  padding: 1em;
 }
 
 #tokenizer > * {
@@ -231,4 +237,16 @@ footer {
 #notes {
   opacity: 0.5;
   max-width: 35em;
+}
+
+.metadata {
+	display: grid;
+	grid-template-columns: 2fr 2fr;
+	grid-gap: 1em;
+	justify-content:space-between;
+	text-align: right;
+}
+
+.metadata label {
+	opacity: 0.8;
 }

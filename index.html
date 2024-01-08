@@ -4,6 +4,7 @@
     <title>SD Tokenizer</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link rel="stylesheet" href="main.css" />
+    <!-- <link rel="stylesheet" href="output.css" /> -->
     <meta
       name="viewport"
       content="width=device-width,initial-scale=1,shrink-to-fit=no"
@@ -47,14 +48,16 @@
         <input type="button" id="tokenize" value="Tokenize" />
       </form>
 
-      <div>
+      <div class="metadata">
         <label
           ><input type="checkbox" id="hide-end-of-word" value="on" /> Hide
           <span
             title="End of word character shows when the tokenizer has a separate token for tokens that end a word"
             >end of word character (&lt;/w&gt;)</span
-          ></label
-        >
+          ></label>
+				<div>
+					<span id="num-tokens">#</span> tokens
+				</div>
       </div>
 
       <div id="result"></div>
