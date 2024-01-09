@@ -7,6 +7,13 @@ const tokenizerEle = document.querySelector("#tokenizer");
 
 let hideEndOfWord;
 
+// function debounce(callback, delay, timeout) {
+//   return function () {
+//     clearTimeout(timeout);
+//     timeout = setTimeout(callback, delay);
+//   };
+// }
+
 function escapeHTML(s) {
   return s
     .replace("&", "&amp;")
@@ -73,10 +80,10 @@ async function run_wasm() {
   worker.onmessage = (e) => {
     const encoding = e.data;
 
-    loadingTimeout = setTimeout(() => {
-      loadingEle.textContent = "";
-      loadingEle.classList.remove("is-loading");
-    }, 240);
+    // loadingTimeout = setTimeout(() => {
+    //   loadingEle.textContent = "";
+    //   loadingEle.classList.remove("is-loading");
+    // }, 240);
 
     tokensEle.innerHTML = "";
     encoding
@@ -85,6 +92,7 @@ async function run_wasm() {
         tokensEle.append(v);
       });
 
+    inputIdsEle.innerHTML = "";
     encoding
       .map((enc) => document.createTextNode(enc.input_ids.join(", ")))
       .forEach((v) => inputIdsEle.append(v));
@@ -97,15 +105,15 @@ async function run_wasm() {
   };
 
   const getTokens = () => {
-    if (loadingTimeout) {
-      // We don't want it clearing before we load again if we are unloading
-      clearTimeout(loadingTimeout);
-    }
-
-    loadingEle.textContent = "Loading...";
-    loadingEle.classList.add("is-loading");
-    tokensEle.textContent = "";
-    inputIdsEle.textContent = "";
+    // if (loadingTimeout) {
+    //   // We don't want it clearing before we load again if we are unloading
+    //   clearTimeout(loadingTimeout);
+    // }
+    //
+    // loadingEle.textContent = "Loading...";
+    // loadingEle.classList.add("is-loading");
+    // tokensEle.textContent = "";
+    // inputIdsEle.textContent = "";
 
     worker.postMessage({
       sd_model: modelEle.value,
