@@ -1,17 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>SD Tokenizer</title>
+    <title>Stable Diffusion Tokenizer</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link rel="stylesheet" href="main.css" />
-    <!-- <link rel="stylesheet" href="output.css" /> -->
     <meta
       name="viewport"
       content="width=device-width,initial-scale=1,shrink-to-fit=no"
     />
     <meta
       name="description"
-      content="See which tokens are used for your words in Stable Diffusion"
+      content="Informs you about how your prompt/words gets turned into tokens, privately. For Stable Diffusion models, CLIP models"
     />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
     <link rel="shortcut icon" href="favicon-32.ico" />
@@ -20,10 +19,10 @@
 
   <body>
     <div id="wrapper">
-      <h1>SD Tokenizer</h1>
+      <h1>Stable Diffusion Tokenizer</h1>
       <p>
-        Find out which tokens are used for your words. Uses Hugging Face
-        Tokenizer, locally.
+        How your prompt/words gets turned into tokens. Privately. For Stable
+        Diffusion models.
       </p>
 
       <form id="tokenizer">
@@ -54,10 +53,9 @@
           <span
             title="End of word character shows when the tokenizer has a separate token for tokens that end a word"
             >end of word character (&lt;/w&gt;)</span
-          ></label>
-				<div>
-					<span id="num-tokens">#</span> tokens
-				</div>
+          ></label
+        >
+        <div><span id="num-tokens">#</span> tokens</div>
       </div>
 
       <div id="result"></div>
@@ -107,5 +105,12 @@
 
     <script src="./pkg/sd_tokenizer.js"></script>
     <script src="./main.js"></script>
+    <!-- Cloudflare Web Analytics -->
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "bd0fdc4fab684496a7e0b40fee3b2412"}'
+    ></script>
+    <!-- End Cloudflare Web Analytics -->
   </body>
 </html>

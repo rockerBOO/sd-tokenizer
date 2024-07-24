@@ -80,11 +80,6 @@ async function run_wasm() {
   worker.onmessage = (e) => {
     const encoding = e.data;
 
-    // loadingTimeout = setTimeout(() => {
-    //   loadingEle.textContent = "";
-    //   loadingEle.classList.remove("is-loading");
-    // }, 240);
-
     tokensEle.innerHTML = "";
     encoding
       .map((enc) => tokenList(enc.tokens, enc.input_ids))
@@ -105,16 +100,6 @@ async function run_wasm() {
   };
 
   const getTokens = () => {
-    // if (loadingTimeout) {
-    //   // We don't want it clearing before we load again if we are unloading
-    //   clearTimeout(loadingTimeout);
-    // }
-    //
-    // loadingEle.textContent = "Loading...";
-    // loadingEle.classList.add("is-loading");
-    // tokensEle.textContent = "";
-    // inputIdsEle.textContent = "";
-
     worker.postMessage({
       sd_model: modelEle.value,
       input: wordsEle.value,
