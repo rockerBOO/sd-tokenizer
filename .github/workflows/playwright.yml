@@ -20,12 +20,12 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
       - name: Install Playwright Browsers
-        run: yarn dlx playwright@1.40.1 install --with-deps
+        run: yarn dlx playwright@1.49.1 install --with-deps
       - name: Run changed playwright tests
-        run: yarn dlx playwright@1.40.1 test --only-changed=$GITHUB_BASE_REF
+        run: yarn dlx playwright@1.49.1 test --only-changed=$GITHUB_BASE_REF
         if: github.event_name == 'pull_request'
       - name: Run playwright tests
-        run: yarn dlx playwright@1.40.1 test
+        run: yarn dlx playwright@1.49.1 test
       - uses: actions/upload-artifact@v3
         if: ${{ !cancelled() }}
         with:

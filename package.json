@@ -6,7 +6,7 @@
   "author": "rockerBOO <rockerboo@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.49.1",
     "@types/node": "^20.10.3",
     "ava": "^6.2.0",
     "lightningcss-cli": "^1.22.1",
