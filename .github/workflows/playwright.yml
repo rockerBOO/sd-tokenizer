@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-24.04 
     env:
       CI: 1
-    container:
-      image: mcr.microsoft.com/playwright:v1.40.1-noble
-      options: --user 1001
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
