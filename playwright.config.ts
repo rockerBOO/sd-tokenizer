@@ -1,8 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
-console.log('ci', process.env.CI);
-
 export default defineConfig({
+  testDir: "e2e-tests",
   projects: [
     /* Test against desktop browsers */
     {
