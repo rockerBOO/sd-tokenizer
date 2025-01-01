@@ -9,12 +9,14 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-24.04 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Corepack enable
+        run: corepack enable
       - name: Install dependencies
-        run: npm install -g yarn && yarn
+        run: yarn install --frozen-lockfile
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
       - name: Run Playwright tests
