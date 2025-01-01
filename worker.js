@@ -1,30 +1,44 @@
-// The worker has its own scope and no direct access to functions/objects of the
-// global scope. We import the generated JS file to make `wasm_bindgen`
-// available which we need to initialize our Wasm code.
 importScripts("./pkg/sd_tokenizer.js");
 
-// In the worker, we have a different struct that we want to use as in
-// `index.js`.
 const { SDTokenizer } = wasm_bindgen;
 
-CLIP_BASE = "openai/clip-vit-base-patch32";
-CLIP_LARGE = "openai/clip-vit-large-patch14";
-CLIP_BIGG = "laion/CLIP-ViT-bigG-14-laion2B-39B-b160k";
+const CLIP_BASE = "openai/clip-vit-base-patch32";
+const CLIP_LARGE = "openai/clip-vit-large-patch14";
+const CLIP_BIGG = "laion/CLIP-ViT-bigG-14-laion2B-39B-b160k";
+const T5_XXL = "google-t5/t5-small";
 
 class Tokenizer {
-  constructor(json) {
+  constructor(json, name) {
     this.tokenizer = new SDTokenizer(json);
+    this.name = name;
+  }
+
+  static try_from_pretrained_cache(name) {
+    const sessionName = `${name}-tokenizer-json`;
+    const json = localStorage.getItem(sessionName);
+
+    if (!json) {
+      const fromPretrained = Tokenizer.fetch_from_pretrained(name);
+      localStorage.setItem(sessionName, fromPretrained);
+
+      return fromPretrained;
+    }
+
+    return json;
+  }
+
+  static async fetch_from_pretrained(name) {
+    const url = `https://huggingface.co/${name}/resolve/main/tokenizer.json`;
+    const response = await fetch(url);
+    return new Uint8Array(await response.arrayBuffer());
   }
 
   static async from_pretrained(name) {
-    const response = await fetch(
-      `https://huggingface.co/${name}/resolve/main/tokenizer.json`,
-    );
-    const json = await response.text();
-    return new Tokenizer(json);
+    const json = await Tokenizer.fetch_from_pretrained(name);
+    return new Tokenizer(json, name);
   }
 
-  static async from_sd_model(name) {
+  static async from_hf_model(name) {
     if (name == "stabilityai/sdxl-turbo") {
       return Promise.all([
         await Tokenizer.from_pretrained(CLIP_LARGE),
@@ -35,10 +49,29 @@ class Tokenizer {
         await Tokenizer.from_pretrained(CLIP_LARGE),
         await Tokenizer.from_pretrained(CLIP_BIGG),
       ]);
+    } else if (name == "stabilityai/stable-diffusion-3.5-large") {
+      return Promise.all([
+        await Tokenizer.from_pretrained(CLIP_LARGE),
+        await Tokenizer.from_pretrained(CLIP_BIGG),
+        await Tokenizer.from_pretrained(T5_XXL),
+      ]);
+    } else if (name == "stabilityai/stable-diffusion-3.5-medium") {
+      return Promise.all([
+        await Tokenizer.from_pretrained(CLIP_LARGE),
+        await Tokenizer.from_pretrained(CLIP_BIGG),
+        await Tokenizer.from_pretrained(T5_XXL),
+      ]);
     } else if (name == "stabilityai/stable-diffusion-2-1") {
       return Promise.all([await Tokenizer.from_pretrained(CLIP_BASE)]);
     } else if (name == "runwayml/stable-diffusion-v1-5") {
       return Promise.all([await Tokenizer.from_pretrained(CLIP_BASE)]);
+    } else if (name == "PixArt-alpha/PixArt-XL-2") {
+      return Promise.all([await Tokenizer.from_pretrained(T5_XXL)]);
+    } else if (name == "black-forest-labs/FLUX.1-schnell") {
+      return Promise.all([
+        await Tokenizer.from_pretrained(CLIP_LARGE),
+        await Tokenizer.from_pretrained(T5_XXL),
+      ]);
     } else {
       throw new Error(`Invalid model ${name}`);
     }
@@ -50,6 +83,7 @@ class Tokenizer {
 }
 
 const tokenizers = new Map();
+let allTokenizers;
 
 async function init_wasm_in_worker() {
   // Load the wasm file by awaiting the Promise returned by `wasm_bindgen`.
@@ -60,9 +94,19 @@ async function init_wasm_in_worker() {
       return tokenizers.get(name);
     }
 
-    const all_tokenizers = await Tokenizer.from_sd_model(name);
+    allTokenizers = await Tokenizer.from_hf_model(name);
 
-    all_tokenizers.map((tokenizer) => {
+    allTokenizers.map((tokenizer) => {
+      tokenizers.set(name, tokenizer);
+    });
+
+    return tokenizers.get(name);
+  };
+
+  const getTokenizers = async (name) => {
+    const allTokenizers = await Tokenizer.from_hf_model(name);
+
+    allTokenizers.map((tokenizer) => {
       tokenizers.set(name, tokenizer);
     });
 
@@ -71,19 +115,40 @@ async function init_wasm_in_worker() {
 
   // Set callback to handle messages passed to the worker.
   self.onmessage = async (event) => {
-    // No data to process...
-    if (event.data.input.trim() === "") {
-      return;
-    }
-    const tokenizer = await getTokenizer(event.data.sd_model);
-    const encoding = tokenizer.encode(event.data.input);
+    switch (event.data.t) {
+      case "tokenize": {
+        // No data to process...
+        if (event.data.input.trim() === "") {
+          break;
+        }
 
-    self.postMessage([
-      {
-        tokens: encoding.tokens,
-        input_ids: encoding.input_ids,
-      },
-    ]);
+        const tokenizer = await getTokenizer(event.data.hf_model);
+
+        const results = allTokenizers.map((tokenizer) => {
+          const encoding = tokenizer.encode(event.data.input);
+
+          return {
+            prompt: event.data.input.trim(),
+            name: tokenizer.name,
+            tokens: encoding.tokens,
+            input_ids: encoding.input_ids,
+          };
+        });
+        // const encoding = tokenizer.encode(event.data.input);
+
+        self.postMessage({
+          results,
+          modelName: event.data.hf_model,
+          t: "tokenized_results",
+        });
+        break;
+      }
+
+      default: {
+        self.postMessage({ status: "ok", t: "loaded" });
+        break;
+      }
+    }
   };
 }
 
