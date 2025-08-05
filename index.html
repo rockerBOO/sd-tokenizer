@@ -1,116 +1,262 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Stable Diffusion Tokenizer</title>
+    <title>Diffusion Tokenizer</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-    <link rel="stylesheet" href="main.css" />
-    <meta
-      name="viewport"
-      content="width=device-width,initial-scale=1,shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       name="description"
-      content="Informs you about how your prompt/words gets turned into tokens, privately. For Stable Diffusion models, CLIP models"
+      content="Informs you about how your prompt/words gets turned into tokens, privately in your browser. For Diffusion models like Stable Diffusion, Flux, Pixart"
     />
+
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
     <link rel="shortcut icon" href="favicon-32.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-favicon.png" />
-  </head>
+    <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="main.css" />
 
-  <body>
-    <div id="wrapper">
-      <h1>Stable Diffusion Tokenizer</h1>
-      <p>
-        How your prompt/words gets turned into tokens. Privately. For Stable
-        Diffusion models.
-      </p>
-
-      <form id="tokenizer">
-        <textarea
-          type="text"
-          class="input"
-          id="input"
-          placeholder="A glorious dog"
-          role="textbox"
-          contenteditable
-        ></textarea>
-        <div class="custom-select">
-          <select name="model" id="model">
-            <option value="runwayml/stable-diffusion-v1-5">SD 1.x</option>
-            <option value="stabilityai/stable-diffusion-2-1">SD 2.x</option>
-            <option value="stabilityai/stable-diffusion-xl-base-1.0">
-              SDXL
-            </option>
-            <option value="stabilityai/sdxl-turbo">SDXL Turbo</option>
-          </select>
-        </div>
-        <input type="button" id="tokenize" value="Tokenize" />
-      </form>
-
-      <div class="metadata">
-        <label
-          ><input type="checkbox" id="hide-end-of-word" value="on" /> Hide
-          <span
-            title="End of word character shows when the tokenizer has a separate token for tokens that end a word"
-            >end of word character (&lt;/w&gt;)</span
-          ></label
-        >
-        <div><span id="num-tokens">#</span> tokens</div>
-      </div>
-
-      <div id="result"></div>
-      <div id="loading-container">
-        <div id="loading"></div>
-      </div>
-      <div class="container">
-        <div class="block">
-          <div>Tokens:</div>
-          <div id="tokens"></div>
-        </div>
-        <div class="block">
-          <div>Input ids:</div>
-          <div id="input_ids"></div>
-        </div>
-      </div>
-    </div>
-
-    <div id="notes">
-      <h3>Notes</h3>
-      <h4>End of word character &lt;/w&gt;</h4>
-      <p>
-        End of word character (&lt;/w&gt;) is part of the token to represent a
-        token that is at the end of the word. This is different than if it was
-        at the start of word, or in the middle of a word.
-      </p>
-      <h4>Token highlighting</h4>
-      <p>
-        Tokens have alternating background colors to represent how the words can
-        be broken up.
-      </p>
-    </div>
-
-    <footer>
-      <h4>By <a href="https://rocker.boo">rockerBOO</a></h4>
-      <nav>
-        <ul>
-          <li><a href="https://davelage.com">Dave Lage</a></li>
-          <li>
-            <a href="https://github.com/rockerBOO/sd-tokenizer"
-              >github.com/rockerBOO/sd-tokenizer</a
-            >
-          </li>
-        </ul>
-      </nav>
-    </footer>
-
-    <script src="./pkg/sd_tokenizer.js"></script>
-    <script src="./main.js"></script>
-    <!-- Cloudflare Web Analytics -->
+    <script defer src="./pkg/sd_tokenizer.js"></script>
+    <script defer src="./main.js"></script>
     <script
       defer
       src="https://static.cloudflareinsights.com/beacon.min.js"
       data-cf-beacon='{"token": "bd0fdc4fab684496a7e0b40fee3b2412"}'
     ></script>
-    <!-- End Cloudflare Web Analytics -->
+  </head>
+  <body>
+    <main class="container">
+      <h1>Diffusion Tokenizer</h1>
+      <p>
+        How your prompt/words gets turned into tokens, privately in your
+        browser, For diffusion models.
+      </p>
+
+      <form id="tokenizer">
+        <div id="models"></div>
+        <textarea
+          type="text"
+          class="input"
+          id="input"
+          placeholder="Enter some text"
+          role="textbox"
+          contenteditable
+        ></textarea>
+        <div class="controls">
+          <button type="button" id="clear">Clear</button>
+          <button type="button" id="show-example">Show example</button>
+        </div>
+      </form>
+      <article>
+        <h1 id="model"></h1>
+        <div id="results"></div>
+        <template id="result-template">
+          <section>
+            <h3 class="tokenizer-model"></h3>
+            <div class="metadata">
+              <div class="number">Tokens<span class="tokens">0</span></div>
+              <div class="number">
+                Characters<span class="characters">0</span>
+              </div>
+              <div class="number">Words<span class="words">0</span></div>
+            </div>
+            <h4>Tokens</h4>
+            <div class="tokens-list"></div>
+            <h4>Input ids</h4>
+            <div class="input-ids-list"></div>
+          </section>
+        </template>
+      </article>
+
+      <aside id="notes">
+        <h3>Notes</h3>
+        <h4>End of word character &lt;/w&gt;</h4>
+        <p>
+          End of word character (&lt;/w&gt;) is part of the token to represent a
+          token that is at the end of the word. This is different than if it was
+          at the start of word, or in the middle of a word. Used in CLIP
+          tokenizer.
+        </p>
+        <h4>Start of word character ▁</h4>
+        <p>
+          Start of word character (▁) is part of the token to represent a token
+          that is at the start of the word. This is different than if it was at
+          the end of word, or in the middle of a word. Used in T5 tokenizer.
+        </p>
+        <h4>Token highlighting</h4>
+        <p>
+          Tokens have alternating background colors to represent how the words
+          can be broken up as tokens.
+        </p>
+        <h4>How do we get the tokens?</h4>
+        <p>
+          We use the
+          <a href="https://github.com/huggingface/tokenizers" target="_blank"
+            >Tokenizer</a
+          >
+          library to extract the tokens from your text. We download the
+          tokenizer.json from the relevant text encoder. These tokens are the
+          same that are used when prompting diffusion models.
+        </p>
+        <h4 id="limit-for-tokens-in-stable-diffusion">
+          What is the limit for tokens in Stable Diffusion?
+        </h4>
+        <p>
+          Tokens are limited to 77 in CLIP Text Encoder models. 2 tokens are
+          used to indicate the start and stop of the text input, leaving us with
+          75 tokens to be used in prompting.
+        </p>
+
+        <p>
+          To get around this limitation we can concatenate our tokens into
+          smaller pieces. If we have 120 tokens, we can split it at 75 tokens
+          and put the remaining 45 tokens in another.
+        </p>
+
+        <p>[75 tokens, 45 tokens]</p>
+
+        <p>
+          To prevent splitting at 75 tokens, image generation tools may have a
+          way to set a BREAK point. This allows you to control where the break
+          happens and create complete prompts.
+        </p>
+
+        <p>Example (a1111 webui):</p>
+        <pre><code>a large dog BREAK a small cat</code></pre>
+        <h4>
+          What is the limit for tokens using Pixart or Flux models with T5xxl?
+        </h4>
+        <p>
+          Tokens are limited to the max of 512 for the T5xxl model. The CLIP
+          component will reflect the
+          <a href="#limit-for-tokens-in-stable-diffusion"
+            >similar limit as Stable Diffusion</a
+          >
+          of 75 tokens.
+        </p>
+        <h4>How is it private? Can anyone see what I'm looking up?</h4>
+        <p>
+          The tokenizer runs privately in your browser. Communications are
+          limited to your browser and no connections/servers are used.
+        </p>
+
+        <h4>How much bandwidth does this use?</h4>
+        <p>
+          Loading tokenizers are around 2-3MB and are loaded into cache for
+          further runs.
+        </p>
+
+        <h4>What tokenizers are each model using?</h4>
+        <p>
+          The tokenizers are usually associated with the text encoder model.
+          Below is the associated text encoder which is assocated with a
+          tokenizer.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Model source</th>
+              <th>Text Encoder source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">SD1</th>
+              <td>runwayml/stable-diffusion-v1-5</td>
+              <td>
+                <ul>
+                  <li>CLIP ViT/B (openai/clip-vit-base-patch32)</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">SD2</th>
+              <td>stabilityai/stable-diffusion-2-1</td>
+              <td>
+                <ul>
+                  <li>CLIP ViT/B (openai/clip-vit-base-patch32)</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">SDXL</th>
+              <td>stabilityai/stable-diffusion-xl-base-1.0</td>
+              <td>
+                <ul>
+                  <li>CLIP ViT/L (openai/clip-vit-large-patch14)</li>
+                  <li>
+                    OpenCLIP ViT/bigG (laion/CLIP-ViT-bigG-14-laion2B-39B-b160k)
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">SD3</th>
+              <td>stabilityai/stable-diffusion-3.5-large</td>
+              <td>
+                <ul>
+                  <li>CLIP ViT/L (openai/clip-vit-large-patch14)</li>
+                  <li>
+                    OpenCLIP ViT/bigG (laion/CLIP-ViT-bigG-14-laion2B-39B-b160k)
+                  </li>
+                  <li>T5xxl (google/t5-v1_1-xxl)</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Flux</th>
+              <td>black-forest-labs/FLUX.1-schnell</td>
+              <td>
+                <ul>
+                  <li>CLIP ViT/L (openai/clip-vit-large-patch14)</li>
+                  <li>T5xxl (google/t5-v1_1-xxl)</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Pixart</th>
+              <td>PixArt-alpha/PixArt-XL-2-1024-MS</td>
+              <td>
+                <ul>
+                  <li>T5xxl (google/t5-v1_1-xxl)</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </aside>
+      <aside>
+        <p>
+          Some models use a tokenizer in another repository like T5 models refer
+          to <code>google-t5/t5-small</code> for the tokenizer.
+        </p>
+      </aside>
+    </main>
+
+    <footer class="container">
+      <h4>By <a href="https://rocker.boo">rockerBOO</a></h4>
+      <nav>
+        <ul>
+          <li><a href="https://davelage.com">Dave Lage</a></li>
+          <li>
+            Source:
+            <a href="https://github.com/rockerBOO/sd-tokenizer"
+              >github.com/rockerBOO/sd-tokenizer</a
+            >
+          </li>
+
+          <li>
+            <a href="https://lora-inspector.rocker.boo">LoRA Inspector</a> -
+            Inspector your LoRA models with metadata and tensor analysis.
+          </li>
+          <li>
+            Tokenizers source:
+            <a href="https://github.com/huggingface/tokenizers" rel="noopener"
+              >https://github.com/huggingface/tokenizers</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </footer>
   </body>
 </html>

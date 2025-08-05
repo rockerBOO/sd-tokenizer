@@ -1,0 +1,26 @@
+{
+  "name": "sd-tokenizer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:rockerBOO/sd-tokenizer.git",
+  "author": "rockerBOO <rockerboo@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^20.10.3",
+    "ava": "^6.2.0",
+    "lightningcss-cli": "^1.22.1",
+    "vite": "^5.4.10"
+  },
+  "scripts": {
+    "dev": "vite",
+    "preview": "vite preview",
+    "build": "vite build",
+    "test": "ava",
+    "e2e-test": "playwright test e2e-tests"
+  },
+  "dependencies": {
+    "lightningcss": "^1.22.1"
+  },
+  "packageManager": "yarn@4.6.0"
+}
