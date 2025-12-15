@@ -9,64 +9,27 @@
       content="Informs you about how your prompt/words gets turned into tokens, privately in your browser. For Diffusion models like Stable Diffusion, Flux, Pixart"
     />
 
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
-    <link rel="shortcut icon" href="favicon-32.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-favicon.png" />
-    <link rel="stylesheet" href="reset.css" />
-    <link rel="stylesheet" href="main.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/img/favicon-32.png"
+    />
+    <link rel="shortcut icon" href="./assets/img/favicon-32.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./assets/img/apple-favicon.png"
+    />
+    <link rel="stylesheet" href="./assets/css/reset.css" />
+    <link rel="stylesheet" href="./assets/css/main.css" />
 
-    <script defer src="./pkg/sd_tokenizer.js"></script>
-    <script defer src="./main.js"></script>
-    <script
-      defer
-      src="https://static.cloudflareinsights.com/beacon.min.js"
-      data-cf-beacon='{"token": "bd0fdc4fab684496a7e0b40fee3b2412"}'
-    ></script>
+    <script type="module" src="./assets/js/main.jsx"></script>
   </head>
   <body>
-    <main class="container">
-      <h1>Diffusion Tokenizer</h1>
-      <p>
-        How your prompt/words gets turned into tokens, privately in your
-        browser, For diffusion models.
-      </p>
+    <main id="app" class="container"></main>
 
-      <form id="tokenizer">
-        <div id="models"></div>
-        <textarea
-          type="text"
-          class="input"
-          id="input"
-          placeholder="Enter some text"
-          role="textbox"
-          contenteditable
-        ></textarea>
-        <div class="controls">
-          <button type="button" id="clear">Clear</button>
-          <button type="button" id="show-example">Show example</button>
-        </div>
-      </form>
-      <article>
-        <h1 id="model"></h1>
-        <div id="results"></div>
-        <template id="result-template">
-          <section>
-            <h3 class="tokenizer-model"></h3>
-            <div class="metadata">
-              <div class="number">Tokens<span class="tokens">0</span></div>
-              <div class="number">
-                Characters<span class="characters">0</span>
-              </div>
-              <div class="number">Words<span class="words">0</span></div>
-            </div>
-            <h4>Tokens</h4>
-            <div class="tokens-list"></div>
-            <h4>Input ids</h4>
-            <div class="input-ids-list"></div>
-          </section>
-        </template>
-      </article>
-
+    <article>
       <aside id="notes">
         <h3>Notes</h3>
         <h4>End of word character &lt;/w&gt;</h4>
@@ -231,7 +194,7 @@
           to <code>google-t5/t5-small</code> for the tokenizer.
         </p>
       </aside>
-    </main>
+    </article>
 
     <footer class="container">
       <h4>By <a href="https://rocker.boo">rockerBOO</a></h4>

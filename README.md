@@ -14,13 +14,14 @@ wasm-pack build --target no-modules
 
 ## Usage
 
-After building the WASM we can load everything from an http-server. 
+After building the WASM we can load everything from an http-server.
 
 Example server:
 
 ```
 npx http-server
 ```
+
 ```
 npx http-server
 Starting up http-server, serving ./
@@ -47,7 +48,6 @@ Hit CTRL-C to stop the server
 ```
 
 And we can go to `http://127.0.0.1:8080`.
- 
 
 ## Deploy
 

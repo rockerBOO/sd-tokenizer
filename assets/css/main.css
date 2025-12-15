@@ -1,0 +1,267 @@
+:root {
+	--bg-color: #081415;
+	--fg-color: #bbe8d5;
+	--accent-bg-color: #063a35;
+	--accent-fg-color: #b0fff0;
+	--accent-color: #08f7ca;
+	--aside-bg-color: #112c2f;
+	--sans-serif:
+		ui-rounded, "Hiragino Maru Gothic ProN", quicksand, comfortaa, manjari,
+		"Arial Rounded MT", "Arial Rounded MT Bold", calibri, source-sans-pro,
+		sans-serif;
+	--monospace:
+		ui-monospace, "Cascadia Code", "Source Code Pro", menlo, consolas,
+		"DejaVu Sans Mono", monospace;
+}
+
+html,
+body {
+	font-family: var(--sans-serif);
+	font-display: optional;
+}
+
+@supports (font-variation-settings: normal) {
+	html,
+	body {
+		font-family: "Inter var", "Inter Variable", var(--sans-serif);
+	}
+}
+
+body {
+	background-color: var(--bg-color);
+	color: var(--fg-color);
+	font-size: 1.2rem;
+}
+
+p {
+	margin: 1em 0 2em;
+}
+
+h1 {
+	font-weight: 900;
+	text-transform: lowercase;
+	font-style: italic;
+}
+
+a {
+	color: var(--accent-fg-color);
+	transition: all ease-in-out 96ms;
+}
+
+a:hover,
+a:focus {
+	color: var(--bg-color);
+	background-color: var(--accent-fg-color);
+}
+
+button {
+	border-radius: 0.2em;
+	background-color: var(--accent-bg-color);
+	color: var(--accent-color);
+	padding: 0.5em 0.75em;
+	border: none;
+	cursor: pointer;
+}
+
+button:hover,
+button:focus {
+	background-color: gray;
+}
+
+textarea {
+	width: 100%;
+	padding: 0.7em;
+	font-size: 1em;
+	font-family: var(--monospace);
+	background-color: transparent;
+	border: 0.15em solid gray;
+	border-radius: 0.2em;
+	color: var(--fg-color);
+}
+
+textarea:focus {
+	box-shadow: 0 0 0.2em black;
+	outline: 0.1em solid var(--accent-color);
+	outline-offset: 0.2em;
+}
+
+table {
+	background-color: var(--accent-bg-color);
+}
+
+th,
+td {
+	background-color: var(--bg-color);
+	padding: 0.5em;
+}
+
+td ul {
+	margin: 0;
+}
+
+.container {
+	margin-right: auto;
+	margin-left: auto;
+	max-width: 100%;
+}
+
+body > article {
+	margin-top: 40vh;
+	margin-right: auto;
+	margin-left: auto;
+	max-width: 100%;
+}
+
+@media (width >= 36rem) {
+	.container {
+		max-width: 31.875rem;
+		padding-right: 0;
+		padding-left: 0;
+	}
+}
+
+@media (width >= 48rem) {
+	.container {
+		max-width: 43.75rem;
+	}
+}
+
+@media (width >= 64rem) {
+	.container {
+		max-width: 60rem;
+	}
+}
+
+@media (width >= 80rem) {
+  .container {
+    max-width: 75rem;
+  }
+
+	body > article {
+    max-width: 75rem;
+	}
+}
+
+@media (width >= 96rem) {
+  .container {
+    max-width: 90rem;
+  }
+
+	body > article {
+    max-width: 90rem;
+	}
+}
+
+.metadata {
+	display: grid;
+	grid-auto-flow: column;
+	gap: 1em;
+	justify-content: left;
+	margin: 1em 0;
+}
+
+.metadata > * {
+	background-color: var(--aside-bg-color);
+	color: var(--accent-fg-color);
+	width: 8em;
+	padding: 1em;
+	border-radius: 0.2em;
+}
+
+#models {
+	display: grid;
+	gap: 1em;
+	grid-template-columns: repeat(auto-fit, minmax(4em, 1fr));
+	margin: 0.5em 0;
+}
+
+#models button.selected {
+	background-color: var(--accent-color);
+	color: var(--accent-bg-color);
+	animation: glow-up 1000ms ease-out;
+}
+
+.number {
+	display: grid;
+	justify-content: center;
+	text-align: center;
+	font-size: 0.9em;
+}
+
+.number span {
+	font-size: 2em;
+}
+
+.controls {
+	display: flex;
+	gap: 1em;
+	margin: 0.5em 0;
+}
+
+.input-ids-list {
+	font-family: var(--monospace);
+}
+
+.tokens-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	font-size: 1.5em;
+}
+
+#results {
+	display: grid;
+	gap: 6em;
+	margin-bottom: 6em;
+}
+
+.tokenizer-model::before {
+	content: "tokenizer: ";
+}
+
+.token-0 {
+	background-color: hsl(289deg 99% 50% / 40%);
+}
+
+.token-1 {
+	background-color: hsl(168deg 99% 45% / 40%);
+}
+
+.token-2 {
+	background-color: hsl(53deg 99% 60% / 40%);
+}
+
+.token-3 {
+	background-color: hsl(0deg 99% 55% / 40%);
+}
+
+.end-of-word {
+	display: none;
+	opacity: 0.2;
+	font-family: var(--monospace);
+}
+
+.token {
+	color: #81ffb8;
+	white-space: pre;
+	display: inline-block;
+}
+
+.token > span {
+	color: white;
+}
+
+
+@keyframes glow-up {
+	0% {
+		box-shadow: 0 0 0 transparent;
+	}
+
+	20% {
+		box-shadow: 0 0 2em var(--accent-fg-color);
+	}
+
+	100% {
+		box-shadow: 0 0 0 transparent;
+	}
+}

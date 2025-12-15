@@ -2,18 +2,16 @@
 name = "sd-tokenizer"
 version = "0.1.0"
 edition = "2021"
+description = "View the tokenisation of your words using the tokeniser."
+repository = "https://github.com/rockerBOO/sd-tokenizer"
+license = "MIT"
 
 [lib]
 crate-type = ["cdylib"]
 
-[features]
-default = ["console_error_panic_hook"]
-
 [dependencies]
 wasm-bindgen = "0.2.89"
-console_error_panic_hook = { version = "0.1.6", optional = true }
-wee_alloc = { version = "0.4.5", optional = true }
-tokenizers = { default-features = false, features = ["unstable_wasm"], version = "0.15.0" }
+tokenizers = { default-features = false, features = ["unstable_wasm"], version = "0.22.2" }
 
 [dependencies.web-sys]
 version = "0.3.4"
@@ -22,7 +20,7 @@ features = [
 ]
 
 [dev-dependencies]
-wasm-bindgen-test = "0.3.13"
+wasm-bindgen-test = "0.3"
 
 [profile.release]
 lto = true
