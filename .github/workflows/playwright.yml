@@ -26,7 +26,7 @@ jobs:
         if: github.event_name == 'pull_request'
       - name: Run playwright tests
         run: yarn dlx playwright@1.49.1 test
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v6
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
