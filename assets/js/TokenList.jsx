@@ -1,6 +1,8 @@
-import React from "react";
-
-export default function TokenList({ tokens, inputIds, hideEndOfWord }) {
+export default function TokenList({
+	tokens,
+	inputIds,
+	hideEndOfWord,
+}) {
 	const renderToken = (token, index) => {
 		const endOfWordIndex = token.indexOf("</w>");
 
