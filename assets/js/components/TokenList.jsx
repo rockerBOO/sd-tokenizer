@@ -3,12 +3,14 @@ import { useMemo } from "react";
 export function TokenList({ tokens, inputIds, name, hideEndOfWord = false }) {
 	const tokenElements = useMemo(() => {
 		return tokens.map((token, i) => {
-			const endOfWord = token.indexOf("</w>");
+			const hasSpacePrefix = token.startsWith("Ġ");
+			const tokenStripped = hasSpacePrefix ? token.slice(1) : token;
+			const endOfWord = tokenStripped.indexOf("</w>");
 			const inputId = inputIds[i];
 			const tokenColor = `token-${i % 4}`;
 
 			if (endOfWord > 0) {
-				const tokenClean = token.replace("</w>", "");
+				const tokenClean = tokenStripped.replace("</w>", "");
 
 				return (
 					<span
@@ -16,6 +18,7 @@ export function TokenList({ tokens, inputIds, name, hideEndOfWord = false }) {
 						title={inputId}
 						className={`token ${tokenColor}`}
 					>
+						{hasSpacePrefix && <span className="space-prefix">&nbsp;</span>}
 						<span className="token-text">{tokenClean}</span>
 						{!hideEndOfWord && (
 							<span className="end-of-word" title="End of word">
@@ -33,7 +36,8 @@ export function TokenList({ tokens, inputIds, name, hideEndOfWord = false }) {
 					title={inputId}
 					className={`token ${tokenColor}`}
 				>
-					<span className="token-text">{token}</span>
+					{hasSpacePrefix && <span className="space-prefix">&nbsp;</span>}
+					<span className="token-text">{tokenStripped}</span>
 				</span>
 			);
 		});

@@ -4,13 +4,18 @@ export default function TokenList({
 	hideEndOfWord,
 }) {
 	const renderToken = (token, index) => {
-		const endOfWordIndex = token.indexOf("</w>");
+		const hasSpacePrefix = token.startsWith("Ġ");
+		const tokenStripped = hasSpacePrefix ? token.slice(1) : token;
+		const endOfWordIndex = tokenStripped.indexOf("</w>");
 
 		if (endOfWordIndex > 0) {
-			const tokenClean = token.replace("</w>", "");
+			const tokenClean = tokenStripped.replace("</w>", "");
 
 			return (
 				<li key={index} title={inputIds[index]}>
+					{hasSpacePrefix && (
+						<span className="space-prefix" title="Space">&nbsp;</span>
+					)}
 					{tokenClean}
 					<span
 						className={`end-of-word ${hideEndOfWord ? "hide" : ""}`}
@@ -24,7 +29,10 @@ export default function TokenList({
 		} else {
 			return (
 				<li key={index} title={inputIds[index]}>
-					{token}
+					{hasSpacePrefix && (
+						<span className="space-prefix" title="Space">&nbsp;</span>
+					)}
+					{tokenStripped}
 				</li>
 			);
 		}
